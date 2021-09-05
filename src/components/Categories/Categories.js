@@ -1,59 +1,70 @@
+//import { useEffect, useState } from 'react';
+import { Component } from 'react';
 
-const Dashboard = () => {
+import * as petsService from '../services/petService';
 
-    return (
+import Pet from '../Pet/Pet';
+import CategoryNavigation from './CategoryNavigation/CategoryNavigation';
 
-        <section className="dashboard">
-            <h1>Dashboard</h1>
-            <nav className="navbar">
-                <ul>
-                    <li><a href="#">All</a></li>
-                    <li><a href="#">Cats</a></li>
-                    <li><a href="#">Dogs</a></li>
-                    <li><a href="#">Parrots</a></li>
-                    <li><a href="#">Reptiles</a></li>
-                    <li><a href="#">Other</a></li>
+
+class Categories extends Component {
+    constructor(props) {
+        super(props);
+
+        //  const [pets, setPets] = useState([]);
+
+        //useEffect(() => {
+        //     fetch('http://localhost:5000/pets')
+        //         .then(res => res.json())
+        //         .then(res => res.setPets(res))
+        // }, [])
+
+        this.state = {
+            pets: [],
+            currentCategory: 'all',
+        }
+    }
+
+    componentDidMount() {
+        petsService.getAll()
+            .then(res => this.setState({ pets: res }))
+    }
+
+    componentDidUpdate(prevProps) {
+        const category = this.props.match.params.category;
+
+
+        if (prevProps.match.params.category == category) {
+            return;
+        }
+
+        petsService.getAll(category)
+            .then(res => this.setState({ pets: res, currentCategory: category }))
+    }
+
+    render() {
+        return (
+            <div className="dashboard">
+                <h1>Dashboard</h1>
+
+                <CategoryNavigation />
+
+                <ul className="other-pets-list">
+                    {this.state.pets.map(x =>
+                        <Pet
+                            key={x.id}
+                            // id={x.id}
+                            // name={x.name}
+                            // description={x.description}
+                            // imageURL={x.imageURL}
+                            // likes={x.likes}
+                            {...x}
+                        //<Pet key = {x.id}{...x} />
+                        />)};
                 </ul>
-            </nav>
-            <ul className="other-pets-list">
-                <li className="otherPet">
-                    <h3>Name: Gosho</h3>
-                    <p>Category: Cat</p>
-                    <p className="img"><img src="https://pics.clipartpng.com/Cat_PNG_Clip_Art-2580.png" /></p>
-                    <p className="description">This is not my cat Gosho</p>
-                    <div className="pet-info">
-                        <a href="#"><button className="button"><i className="fas fa-heart"></i> Pet</button></a>
-                        <a href="#"><button className="button">Details</button></a>
-                        <i className="fas fa-heart"></i> <span> 2</span>
-                    </div>
-                </li>
-                <li className="otherPet">
-                    <h3>Name: Gosho</h3>
-                    <p>Category: Cat</p>
-                    <p className="img"><img src="https://pics.clipartpng.com/Cat_PNG_Clip_Art-2580.png" /></p>
-                    <p className="description">This is not my cat Gosho</p>
-                    <div className="pet-info">
-                        <a href="#"><button className="button"><i className="fas fa-heart"></i> Pet</button></a>
-                        <a href="#"><button className="button">Details</button></a>
-                        <i className="fas fa-heart"></i> <span> 2</span>
-                    </div>
+            </div>
+        );
 
-                </li>
-                <li className="otherPet">
-                    <h3>Name: Kiro</h3>
-                    <p>Category: Dog</p>
-                    <p className="img"><img src="http://www.stickpng.com/assets/images/580b57fbd9996e24bc43bbde.png" />
-                </p>
-                        <p className="description">This is my dog Kiro</p>
-                        <div className="pet-info">
-                            <a href="#"><button className="button"><i className="fas fa-heart"></i> Pet</button></a>
-                            <a href="#"><button className="button">Details</button></a>
-                            <i className="fas fa-heart"></i> <span> 4</span>
-                        </div>
-            </li>
-        </ul>
-    </section>
-            );
-
+    }
 };
- export default Dashboard;
+export default Categories;
