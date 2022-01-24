@@ -18,7 +18,7 @@ const Pet = ({
             <p className="description">{description}</p>
             <div className="pet-info">
                 <Link to="#"><button className="button"><i className="fas fa-heart"></i> Pet</button></Link>
-                <Link to={`"/pets/details/${id}"`}><button className="button">Details</button></Link>
+                <Link to={`/pets/details/${id}`}><button className="button">Details</button></Link>
                 <i className="fas fa-heart"></i> <span> {likes}</span>
             </div>
         </li>

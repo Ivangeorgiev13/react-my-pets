@@ -1,9 +1,9 @@
 //import { useEffect, useState } from 'react';
 import { Component } from 'react';
 
-import * as petsService from '../services/petService';
-
-import Pet from '../Pet/Pet';
+import * as petsService from '../services/PetServices';
+    
+import Petcard from '../PetCard/PetCard';
 import CategoryNavigation from './CategoryNavigation/CategoryNavigation';
 
 
@@ -27,7 +27,7 @@ class Categories extends Component {
 
     componentDidMount() {
         petsService.getAll()
-            .then(res => this.setState({ pets: res }))
+            .then(res => this.setState({ pets: res }));
     }
 
     componentDidUpdate(prevProps) {
@@ -50,17 +50,19 @@ class Categories extends Component {
                 <CategoryNavigation />
 
                 <ul className="other-pets-list">
-                    {this.state.pets.map(x =>
-                        <Pet
-                            key={x.id}
-                            // id={x.id}
-                            // name={x.name}
-                            // description={x.description}
-                            // imageURL={x.imageURL}
-                            // likes={x.likes}
-                            {...x}
-                        //<Pet key = {x.id}{...x} />
-                        />)};
+                    {this.state.pets.map((x) =>
+                        // <Pet
+                        //     key={x.id}
+                        //     // id={x.id}
+                        //     // name={x.name}
+                        //     // description={x.description}
+                        //     // imageURL={x.imageURL}
+                        //     // likes={x.likes}
+                        //     {...x}
+                        // //<Pet key = {x.id}{...x} />
+                        // />
+                        <Petcard key={x.id} {...x} />
+                    )};
                 </ul>
             </div>
         );
